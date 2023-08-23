@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Quicksand:300');
+  body, html {
+    background-color: #181818;
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  .container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .block {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto; /* Додали можливість прокручування вниз */
+  }
+
+  .block1 {
+    height: 20%;
+    font-size: 3em;
+    color: #fff;
+  }
+
+  .block2 {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Змінили justify-content для розміщення кнопок вверху */
+    align-items: center;
+    margin-top: 20px; /* Додали відступ вгору між текстом та кнопками */
+  }
+
+  .block2 a {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 100px;
+    text-align: center;
+    line-height: 50px;
+    border: 2px solid white;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 2em;
+  }
+
+  .block2 a:hover {
+    background-color: white;
+    color: black;
+  }
+
+  /* Адаптація для мобільних телефонів */
+  @media (max-width: 768px) {
+    .block2 a {
+      width: 90%; /* Змінити ширину на 90% для мобільних телефонів */
+      font-size: 1.5em; /* Зменшити розмір шрифту для мобільних телефонів */
+    }
+    
+    .block1 {
+      font-size: 3em; /* Зменшити розмір шрифту для мобільних телефонів */
+    }
+    
+    /* Адаптація для горизонтального режиму на мобільних телефонах */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .block2 {
+        overflow-y: auto; /* Додали можливість прокручування вниз у горизонтальному режимі */
+      }
+      
+      .block2 a {
+        font-size: 1.2em; /* Зменшити розмір шрифту для горизонтального режиму */
+      }
+      
+      .block1 {
+        font-size: 2em; /* Зменшити розмір шрифту для горизонтального режиму */
+      }
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="block block1">
+    <p id="text">Виберіть режим гри</p>
+  </div>
+  <div class="block block2">
+    <a href="1v1gugu.html">1v1(POOLgugu)</a>
+    <a href="1v1MMR.html">1v1(MMR)</a>
+    <a href="2v2.html">2v2</a>
+    <a href="1v1new.html">1v1(Новий сайт)</a>
+    <a href="9ball.html">9BALL</a>
+    <a href="9ball100point.html">9BALL100POINT</a>
+    <a href="training.html">Треніровка</a>
+  </div>
+</div>
+
+<script>
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  const textElement = document.getElementById('text');
+  const randomColor = getRandomColor();
+  textElement.style.textShadow = `0 0 20px ${randomColor}`;
+</script>
+
+</body>
+</html>
