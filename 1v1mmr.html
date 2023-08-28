@@ -413,6 +413,17 @@ const firebaseConfig = {
                 console.error(error);
                 number2Value.textContent = "Error";
             });
+               // Fetch the color value from Firebase for player 2
+            get(child(dbref, "player2/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const player2Color = snapshot.val();
+                    number2Value.style.textShadow = `0 0 20px ${player2Color}`;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
             get(child(dbref, "number/dodbal1"))
             .then((snapshot) => {
