@@ -432,8 +432,8 @@ const firebaseConfig = {
                 if (snapshot.exists()) {
                     const player2Color = snapshot.val();
                     number2Value.style.textShadow = `0 0 20px ${player2Color}`;
-                    d2.style.textShadow = `0 0 20px ${player1Color}`;
-                     f2.style.textShadow = `0 0 20px ${player1Color}`;
+                    d2.style.textShadow = `0 0 20px ${player2Color}`;
+                     f2.style.textShadow = `0 0 20px ${player2Color}`;
                 }
             })
             .catch((error) => {
