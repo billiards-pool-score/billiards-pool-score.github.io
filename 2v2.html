@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1v1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Quicksand:300');
+        body {
+            background-color: #181818;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .block-container {
+            display: flex;
+            flex-direction: row;
+            height: 80%;
+            width: 100%;
+        }
+
+        .block {
+            height: 100%;
+
+        }
+
+        .block:nth-child(1),
+        .block:nth-child(4) {
+            width: 15%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .block:nth-child(1) .sub-block,
+        .block:nth-child(4) .sub-block {
+            flex: 1;
+
+            text-align: center; display: flex; justify-content: center; align-items: center;
+        }
+
+        .block:nth-child(2),
+        .block:nth-child(3) {
+            width: 35%;
+            text-align: center; display: flex; justify-content: center; align-items: center;
+
+        }
+
+        .footer-block {
+            height: 20%;
+            width: 100%;
+
+            text-align: center; display: flex; justify-content: center; align-items: center;
+        }
+
+        button {
+            background-color: #222;
+            color: white;
+            border: none;
+            padding: 40px 40px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        button:hover {
+            background-color: #444;
+        }
+        #currentNumberValue {
+            font-size: 19em;
+            color: #fff;
+            text-shadow: 0 0 20px blue;
+        }
+        #number2Value {
+            font-size: 19em;
+            color: #fff;
+            text-shadow: 0 0 20px red;
+        }
+        #reset {
+            margin-left: 100px; margin-right: 100px;"
+        }
+        @media (max-width: 768px) {
+             body {
+            background-color: #181818;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+
+            font-family: 'Quicksand', sans-serif;
+
+            transform: rotate(-90deg);
+      transform-origin: left top;
+      width: 100vh;
+      height: 100vw;
+      overflow-x: hidden;
+      position: fixed;
+      top: 100%;
+      left: 0;
+            }
+
+            .block-container {
+            display: flex;
+            flex-direction: row;
+            height: 60%;
+            width: 100%;
+            }
+
+            .block {
+                height: 100%;
+
+            }
+
+            .block:nth-child(1),
+            .block:nth-child(4) {
+                width: 15%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .block:nth-child(1) .sub-block,
+            .block:nth-child(4) .sub-block {
+                flex: 1;
+
+                text-align: center; display: flex; justify-content: center; align-items: center;
+            }
+
+            .block:nth-child(2),
+            .block:nth-child(3) {
+                width: 35%;
+                text-align: center; display: flex; justify-content: center; align-items: center;
+
+            }
+
+            .footer-block {
+                height: 40%;
+                width: 100%;
+
+                text-align: center; display: flex; justify-content: center; align-items: center;
+            }
+
+            #currentNumberValue {
+            font-size: 19em;
+            color: #fff;
+            text-shadow: 0 0 20px blue;
+            }
+            #number2Value {
+                font-size: 19em;
+                color: #fff;
+                text-shadow: 0 0 20px red;
+            }
+            #reset {
+            margin-left: 10px; margin-right: 10px;"
+        }
+        }
+        /* Адаптація для горизонтального режиму на мобільних телефонах */
+        @media (max-width: 1000px) and (orientation: landscape) {
+            body {
+            background-color: #181818;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+
+            font-family: 'Quicksand', sans-serif;
+
+
+            }
+
+            .block-container {
+            display: flex;
+            flex-direction: row;
+            height: 60%;
+            width: 100%;
+            }
+
+            .block {
+                height: 100%;
+
+            }
+
+            .block:nth-child(1),
+            .block:nth-child(4) {
+                width: 15%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .block:nth-child(1) .sub-block,
+            .block:nth-child(4) .sub-block {
+                flex: 1;
+
+                text-align: center; display: flex; justify-content: center; align-items: center;
+            }
+
+            .block:nth-child(2),
+            .block:nth-child(3) {
+                width: 35%;
+                text-align: center; display: flex; justify-content: center; align-items: center;
+
+            }
+
+            .footer-block {
+                height: 40%;
+                width: 100%;
+
+                text-align: center; display: flex; justify-content: center; align-items: center;
+            }
+            #currentNumberValue {
+            font-size: 19em;
+            color: #fff;
+            text-shadow: 0 0 20px blue;
+            }
+            #number2Value {
+                font-size: 19em;
+                color: #fff;
+                text-shadow: 0 0 20px red;
+            }
+            #reset {
+            margin-left: 10px; margin-right: 10px;"
+        }
+        }
+    </style>
+</head>
+<body>
+<div class="block-container">
+        <div class="block">
+            <div class="sub-block"><button id="increase1">+</button></div>
+            <div class="sub-block"><button id="decrease1">-</button></div>
+        </div>
+        <div class="block"><span id="currentNumberValue"></span></div>
+        <div class="block"><span id="number2Value"></span></div>
+        <div class="block">
+            <div class="sub-block"><button id="increase2">+</button></div>
+            <div class="sub-block"><button id="decrease2">-</button></div>
+        </div>
+    </div>
+    <div class="footer-block">
+        <button id="reset">Reset</button>
+    </div>
+
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getDatabase, ref, get, child, runTransaction } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBcTxPbjijLfs6n3Dw9A1ZAWcRCHHv_yGQ",
+  authDomain: "billiards-pool-8184f.firebaseapp.com",
+  databaseURL: "https://billiards-pool-8184f-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "billiards-pool-8184f",
+  storageBucket: "billiards-pool-8184f.appspot.com",
+  messagingSenderId: "144934324163",
+  appId: "1:144934324163:web:ba9b9a43e2b926e6851f76"
+};
+
+
+        const app = initializeApp(firebaseConfig);
+
+        const db = getDatabase();
+        var currentNumberValue = document.querySelector("#currentNumberValue");
+        var number2Value = document.querySelector("#number2Value");
+        var increaseBtn1 = document.querySelector("#increase1");
+        var decreaseBtn1 = document.querySelector("#decrease1");
+        var increaseBtn2 = document.querySelector("#increase2");
+        var decreaseBtn2 = document.querySelector("#decrease2");
+        var resetBtn = document.querySelector("#reset");
+
+        function DisplayCurrentNumber() {
+            const dbref = ref(db);
+
+            get(child(dbref, "number/number1"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const currentNumber = snapshot.val();
+                    if (typeof currentNumber === 'number') {
+                        currentNumberValue.textContent = currentNumber;
+                    } else {
+                        currentNumberValue.textContent = "Invalid data";
+                    }
+                } else {
+                    currentNumberValue.textContent = "N/A";
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                currentNumberValue.textContent = "Error";
+            });
+            // Fetch the color value from Firebase for player 1
+            get(child(dbref, "player1/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const player1Color = snapshot.val();
+                    currentNumberValue.style.textShadow = `0 0 20px ${player1Color}`;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+            get(child(dbref, "number/number2"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const number2 = snapshot.val();
+                    if (typeof number2 === 'number') {
+                        number2Value.textContent = number2;
+                    } else {
+                        number2Value.textContent = "Invalid data";
+                    }
+                } else {
+                    number2Value.textContent = "N/A";
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                number2Value.textContent = "Error";
+            });
+                // Fetch the color value from Firebase for player 2
+            get(child(dbref, "player2/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const player2Color = snapshot.val();
+                    number2Value.style.textShadow = `0 0 20px ${player2Color}`;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+
+        function updateNumber1(increment) {
+            const number1Ref = ref(db, "number/number1");
+            runTransaction(number1Ref, (currentNumber) => {
+                if (currentNumber === null) {
+                    return 0;
+                }
+                return currentNumber + increment;
+            })
+            .then(() => {
+                DisplayCurrentNumber();
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+
+        function updateNumber2(increment) {
+            const number2Ref = ref(db, "number/number2");
+            runTransaction(number2Ref, (number2) => {
+                if (number2 === null) {
+                    return 0;
+                }
+                return number2 + increment;
+            })
+            .then(() => {
+                DisplayCurrentNumber();
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+
+        function resetNumbers() {
+            const number1Ref = ref(db, "number/number1");
+            const number2Ref = ref(db, "number/number2");
+
+            runTransaction(number1Ref, () => 0)
+                .then(() => {
+                    return runTransaction(number2Ref, () => 0);
+                })
+                .then(() => {
+                    DisplayCurrentNumber();
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
+        increaseBtn1.addEventListener('click', () => {
+            updateNumber1(1);
+        });
+
+        decreaseBtn1.addEventListener('click', () => {
+            updateNumber1(-1);
+        });
+
+        increaseBtn2.addEventListener('click', () => {
+            updateNumber2(1);
+        });
+
+        decreaseBtn2.addEventListener('click', () => {
+            updateNumber2(-1);
+        });
+
+        resetBtn.addEventListener('click', () => {
+            resetNumbers();
+        });
+
+        DisplayCurrentNumber();
+</script>
+</body>
+</html>
