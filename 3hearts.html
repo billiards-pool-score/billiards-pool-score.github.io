@@ -1,0 +1,574 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 hearts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Quicksand:300');
+        body {
+            background-color: #181818;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .block-container {
+            display: grid;
+            grid-template-rows: 50% 50%;
+            grid-template-columns: 50% 50%;
+            height: 80%;
+            width: 100%;
+            font-size: 200px;
+        }
+
+        .block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-block {
+            height: 20%;
+            width: 100%;
+            text-align: center; display: flex; justify-content: center; align-items: center;
+        }
+
+        #reset {
+            margin-left: 100px; margin-right: 100px;
+                        background-color: #222;
+            color: white;
+            border: none;
+            padding: 40px 40px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #reset:hover {
+            background-color: #444;
+        }
+  .block button {
+    font-size: 200px;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+             body {
+            background-color: #181818;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+
+            font-family: 'Quicksand', sans-serif;
+
+            transform: rotate(-90deg);
+      transform-origin: left top;
+      width: 100vh;
+      height: 100vw;
+      overflow-x: hidden;
+      position: fixed;
+      top: 100%;
+      left: 0;
+            }
+            #reset {
+            margin-left: 10px; margin-right: 10px;
+        }
+        .block button {
+            font-size: 100px;
+        }
+        }
+    @media (max-width: 1000px) and (orientation: landscape) {
+         .block button {
+            font-size: 100px;
+        }
+    }
+    </style>
+</head>
+<body>
+<div class="block-container">
+        <div class="block">
+              <button id="hearts1_1">❤</button>
+              <button id="hearts1_2">❤</button>
+              <button id="hearts1_3">❤</button>
+        </div>
+        <div class="block">
+              <button id="hearts2_1">❤</button>
+              <button id="hearts2_2">❤</button>
+              <button id="hearts2_3">❤</button>
+        </div>
+        <div class="block">
+              <button id="hearts3_1">❤</button>
+              <button id="hearts3_2">❤</button>
+              <button id="hearts3_3">❤</button>
+        </div>
+        <div class="block">
+              <button id="hearts4_1">❤</button>
+              <button id="hearts4_2">❤</button>
+              <button id="hearts4_3">❤</button>
+        </div>
+</div>
+<div class="footer-block"><button id="reset">Reset</button></div>
+
+<script type="module">
+
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getDatabase, ref, get, child, runTransaction } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBcTxPbjijLfs6n3Dw9A1ZAWcRCHHv_yGQ",
+  authDomain: "billiards-pool-8184f.firebaseapp.com",
+  databaseURL: "https://billiards-pool-8184f-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "billiards-pool-8184f",
+  storageBucket: "billiards-pool-8184f.appspot.com",
+  messagingSenderId: "144934324163",
+  appId: "1:144934324163:web:ba9b9a43e2b926e6851f76"
+};
+
+
+        const app = initializeApp(firebaseConfig);
+
+        const db = getDatabase();
+
+        var hearts1_1 = document.querySelector("#hearts1_1");
+        var hearts1_2 = document.querySelector("#hearts1_2");
+        var hearts1_3 = document.querySelector("#hearts1_3");
+        var hearts2_1 = document.querySelector("#hearts2_1");
+        var hearts2_2 = document.querySelector("#hearts2_2");
+        var hearts2_3 = document.querySelector("#hearts2_3");
+        var hearts3_1 = document.querySelector("#hearts3_1");
+        var hearts3_2 = document.querySelector("#hearts3_2");
+        var hearts3_3 = document.querySelector("#hearts3_3");
+        var hearts4_1 = document.querySelector("#hearts4_1");
+        var hearts4_2 = document.querySelector("#hearts4_2");
+        var hearts4_3 = document.querySelector("#hearts4_3");
+
+        var resetBtn = document.querySelector("#reset");
+
+        let isColorChanged1_1 = false;
+        let isColorChanged1_2 = false;
+        let isColorChanged1_3 = false;
+        let isColorChanged2_1 = false;
+        let isColorChanged2_2 = false;
+        let isColorChanged2_3 = false;
+        let isColorChanged3_1 = false;
+        let isColorChanged3_2 = false;
+        let isColorChanged3_3 = false;
+        let isColorChanged4_1 = false;
+        let isColorChanged4_2 = false;
+        let isColorChanged4_3 = false;
+
+
+        function DisplayCurrentNumber() {
+            const dbref = ref(db);
+
+            // Fetch the color value from Firebase for player 1
+            get(child(dbref, "player1/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const player1Color = snapshot.val();
+                    hearts1_1.style.textShadow = `0 0 40px ${player1Color}`;
+                    hearts1_2.style.textShadow = `0 0 40px ${player1Color}`;
+                    hearts1_3.style.textShadow = `0 0 40px ${player1Color}`;
+                    hearts1_1.style.color = `${player1Color}`;
+                    hearts1_2.style.color = `${player1Color}`;
+                    hearts1_3.style.color = `${player1Color}`;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+                // Fetch the color value from Firebase for player 2
+            get(child(dbref, "player2/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const player2Color = snapshot.val();
+                    hearts2_1.style.textShadow = `0 0 40px ${player2Color}`;
+                    hearts2_2.style.textShadow = `0 0 40px ${player2Color}`;
+                    hearts2_3.style.textShadow = `0 0 40px ${player2Color}`;
+                    hearts2_1.style.color = `${player2Color}`;
+                    hearts2_2.style.color = `${player2Color}`;
+                    hearts2_3.style.color = `${player2Color}`;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+            get(child(dbref, "player3/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const player3Color = snapshot.val();
+                    hearts3_1.style.textShadow = `0 0 40px ${player3Color}`;
+                    hearts3_2.style.textShadow = `0 0 40px ${player3Color}`;
+                    hearts3_3.style.textShadow = `0 0 40px ${player3Color}`;
+                    hearts3_1.style.color = `${player3Color}`;
+                    hearts3_2.style.color = `${player3Color}`;
+                    hearts3_3.style.color = `${player3Color}`;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+            get(child(dbref, "player4/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const player4Color = snapshot.val();
+                    hearts4_1.style.textShadow = `0 0 40px ${player4Color}`;
+                    hearts4_2.style.textShadow = `0 0 40px ${player4Color}`;
+                    hearts4_3.style.textShadow = `0 0 40px ${player4Color}`;
+                    hearts4_1.style.color = `${player4Color}`;
+                    hearts4_2.style.color = `${player4Color}`;
+                    hearts4_3.style.color = `${player4Color}`;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+
+        function updateHearts1(n) {
+            const heartsRef = ref(db, "hearts/hearts1");
+            runTransaction(heartsRef, (currentNumber) => {
+                return currentNumber + n;
+            });
+        }
+
+        function updateHearts2(n) {
+            const heartsRef = ref(db, "hearts/hearts2");
+            runTransaction(heartsRef, (currentNumber) => {
+                return currentNumber + n;
+            });
+        }
+
+        function updateHearts3(n) {
+            const heartsRef = ref(db, "hearts/hearts3");
+            runTransaction(heartsRef, (currentNumber) => {
+                return currentNumber + n;
+            });
+        }
+
+        function updateHearts4(n) {
+            const heartsRef = ref(db, "hearts/hearts4");
+            runTransaction(heartsRef, (currentNumber) => {
+                return currentNumber + n;
+            });
+        }
+
+        function reset() {
+            const hearts1Ref = ref(db, "hearts/hearts1");
+            const hearts2Ref = ref(db, "hearts/hearts2");
+            const hearts3Ref = ref(db, "hearts/hearts3");
+            const hearts4Ref = ref(db, "hearts/hearts4");
+
+            runTransaction(hearts1Ref, (currentNumber) => {
+                return currentNumber = 3;
+            });
+            runTransaction(hearts2Ref, (currentNumber) => {
+                return currentNumber = 3;
+            });
+            runTransaction(hearts3Ref, (currentNumber) => {
+                return currentNumber = 3;
+            });
+            runTransaction(hearts4Ref, (currentNumber) => {
+                return currentNumber = 3;
+            });
+            localStorage.setItem('shouldReset', 'true');
+        }
+
+if (localStorage.getItem('shouldReset') === 'true') {
+    reset();
+    localStorage.removeItem('shouldReset'); // Прибираємо прапорець після виконання
+}
+
+        resetBtn.addEventListener('click', () => {
+            reset();
+            localStorage.setItem('shouldReset', 'true'); // Вказуємо, що треба виконати reset() після оновлення
+            window.location.href = '3hearts.html';
+        });
+
+        DisplayCurrentNumber();
+
+hearts1_1.addEventListener("click", () => {
+  isColorChanged1_1 = !isColorChanged1_1;
+
+  if (isColorChanged1_1) {
+    hearts1_1.style.color = "#181818";
+    updateHearts1(-1);
+  } else {
+    updateHearts1(1);
+    const dbref = ref(db);
+    get(child(dbref, "player1/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts1_1.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts1_2.addEventListener("click", () => {
+  isColorChanged1_2 = !isColorChanged1_2;
+
+  if (isColorChanged1_2) {
+    hearts1_2.style.color = "#181818";
+    updateHearts1(-1);
+  } else {
+    updateHearts1(1);
+    const dbref = ref(db);
+    get(child(dbref, "player1/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts1_2.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts1_3.addEventListener("click", () => {
+  isColorChanged1_3 = !isColorChanged1_3;
+
+  if (isColorChanged1_3) {
+    hearts1_3.style.color = "#181818";
+    updateHearts1(-1);
+  } else {
+    updateHearts1(1);
+    const dbref = ref(db);
+    get(child(dbref, "player1/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts1_3.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts2_1.addEventListener("click", () => {
+  isColorChanged2_1 = !isColorChanged2_1;
+
+  if (isColorChanged2_1) {
+    hearts2_1.style.color = "#181818";
+    updateHearts2(-1);
+  } else {
+    updateHearts2(1);
+    const dbref = ref(db);
+    get(child(dbref, "player2/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts2_1.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts2_2.addEventListener("click", () => {
+  isColorChanged2_2 = !isColorChanged2_2;
+
+  if (isColorChanged2_2) {
+    hearts2_2.style.color = "#181818";
+    updateHearts2(-1);
+  } else {
+    updateHearts2(1);
+    const dbref = ref(db);
+    get(child(dbref, "player2/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts2_2.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts2_3.addEventListener("click", () => {
+  isColorChanged2_3 = !isColorChanged2_3;
+
+  if (isColorChanged2_3) {
+    hearts2_3.style.color = "#181818";
+    updateHearts2(-1);
+  } else {
+    updateHearts2(1);
+    const dbref = ref(db);
+    get(child(dbref, "player2/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts2_3.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts3_1.addEventListener("click", () => {
+  isColorChanged3_1 = !isColorChanged3_1;
+
+  if (isColorChanged3_1) {
+    hearts3_1.style.color = "#181818";
+    updateHearts3(-1);
+  } else {
+    updateHearts3(1);
+    const dbref = ref(db);
+    get(child(dbref, "player3/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts3_1.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts3_2.addEventListener("click", () => {
+  isColorChanged3_2 = !isColorChanged3_2;
+
+  if (isColorChanged3_2) {
+    hearts3_2.style.color = "#181818";
+    updateHearts3(-1);
+  } else {
+    updateHearts3(1);
+    const dbref = ref(db);
+    get(child(dbref, "player3/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts3_2.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts3_3.addEventListener("click", () => {
+  isColorChanged3_3 = !isColorChanged3_3;
+
+  if (isColorChanged3_3) {
+    hearts3_3.style.color = "#181818";
+    updateHearts3(-1);
+  } else {
+    updateHearts3(1);
+    const dbref = ref(db);
+    get(child(dbref, "player3/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts3_3.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts4_1.addEventListener("click", () => {
+  isColorChanged4_1 = !isColorChanged4_1;
+
+  if (isColorChanged4_1) {
+    hearts4_1.style.color = "#181818";
+    updateHearts4(-1);
+  } else {
+    updateHearts4(1);
+    const dbref = ref(db);
+    get(child(dbref, "player4/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts4_1.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts4_2.addEventListener("click", () => {
+  isColorChanged4_2 = !isColorChanged4_2;
+
+  if (isColorChanged4_2) {
+    hearts4_2.style.color = "#181818";
+    updateHearts4(-1);
+  } else {
+    updateHearts4(1);
+    const dbref = ref(db);
+    get(child(dbref, "player4/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts4_2.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+hearts4_3.addEventListener("click", () => {
+  isColorChanged4_3 = !isColorChanged4_3;
+
+  if (isColorChanged4_3) {
+    hearts4_3.style.color = "#181818";
+    updateHearts4(-1);
+  } else {
+    updateHearts4(1);
+    const dbref = ref(db);
+    get(child(dbref, "player4/color"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const playerColor = snapshot.val();
+                    hearts4_3.style.color = `${playerColor}`; 
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+});
+
+</script>
+</body>
+</html>
